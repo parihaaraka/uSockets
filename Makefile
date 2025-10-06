@@ -39,6 +39,12 @@ ifeq ($(WITH_LIBUV),1)
 	override LDFLAGS += -luv
 endif
 
+# WITH_LIBUV=1 builds with libuv as event-loop
+ifeq ($(WITH_LIBEV),1)
+	override CFLAGS += -DLIBUS_USE_LIBEV
+	override LDFLAGS += -lev
+endif
+
 # WITH_ASIO builds with boot asio event-loop
 ifeq ($(WITH_ASIO),1)
 	override CFLAGS += -DLIBUS_USE_ASIO
@@ -74,7 +80,7 @@ endif
 # By default we build the uSockets.a static library
 default:
 	rm -f *.o
-	$(CC) $(CFLAGS) -O3 -c src/*.c src/eventing/*.c src/crypto/*.c src/io_uring/*.c
+	$(CC) $(CFLAGS) -O0 -c src/*.c src/eventing/*.c src/crypto/*.c src/io_uring/*.c
 # Also link in Boost Asio support
 ifeq ($(WITH_ASIO),1)
 	$(CXX) $(CXXFLAGS) -Isrc -std=c++14 -flto -O3 -c src/eventing/asio.cpp
@@ -98,7 +104,7 @@ boringssl:
 # Builds all examples
 .PHONY: examples
 examples: default
-	for f in examples/*.c; do $(CC) -O3 $(CFLAGS) -o $$(basename "$$f" ".c")$(EXEC_SUFFIX) "$$f" $(LDFLAGS); done
+	for f in examples/*.c; do $(CC) -O0 $(CFLAGS) -o $$(basename "$$f" ".c")$(EXEC_SUFFIX) "$$f" $(LDFLAGS); done
 
 swift_examples:
 	swiftc -O -I . examples/swift_http_server/main.swift uSockets.a -o swift_http_server

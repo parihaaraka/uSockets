@@ -47,6 +47,10 @@
 #include "internal/eventing/asio.h"
 #endif
 
+#ifdef LIBUS_USE_LIBEV
+#include "internal/eventing/libev.h"
+#endif
+
 /* Poll type and what it polls for */
 enum {
     /* Two first bits */
