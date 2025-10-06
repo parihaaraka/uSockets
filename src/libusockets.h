@@ -346,7 +346,7 @@ void us_socket_remote_address(int ssl, struct us_socket_t *s, char *buf, int *le
 #elif defined(__APPLE__) || defined(__FreeBSD__)
 #define LIBUS_USE_KQUEUE
 #else
-#define LIBUS_USE_LIBEV
+#define LIBUS_USE_EPOLL
 #endif
 #endif
 
