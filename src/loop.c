@@ -74,7 +74,9 @@ void us_internal_loop_unlink(struct us_loop_t *loop, struct us_socket_context_t 
             loop->data.head->prev = 0;
         }
     } else {
-        context->prev->next = context->next;
+        if (context->prev) {
+            context->prev->next = context->next;
+        }
         if (context->next) {
             context->next->prev = context->prev;
         }
